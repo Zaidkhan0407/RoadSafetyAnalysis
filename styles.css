@@ -1,0 +1,5 @@
+/* Remove underlines and change font color for anchor elements */
+a {
+    text-decoration: none; /* Remove underlines */
+    color: #333; /* Change font color to dark gray */
+}
