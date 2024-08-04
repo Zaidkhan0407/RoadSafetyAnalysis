@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Road Safety Analysis</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  
+</head>
+
+<script>
+  const form = document.querySelector('form');
+  const display_graph = document.getElementById('image-for-option1-optionA-item1-choiceX');
+  form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const userInput1 = document.getElementById('dropdown1').value;
+      const userInput2 = document.getElementById('dropdown2').value;
+      const userInput3 = document.getElementById('dropdown3').value;
+      const userInput4 = document.getElementById('dropdown4').value;
+  
+
+
+      fetch('/display_graph', {
+          method: 'POST',
+          body: new URLSearchParams({
+            dropdown1: userInput1,
+            dropdown2: userInput2,
+            dropdown3: userInput3,
+            dropdown4: userInput4}),
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+          }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.value) {
+          // Check if the value is not null
+          displayGraph.src = data.value; // Update the image source
+        } else {
+          // Handle the case where the value is null or empty
+          console.error('Image source is null');
+        }
+      })
+      .catch((error) => {ndia 
+        console.error('Error:', error);
+      });
+  });
+  </script>
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+      Road Safety Analysis</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('about') }}">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Contact us
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item"data-bs-toggle="modal" data-bs-target="#PhoneModal">Phone</a></li>
+              
+              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EmailModal">Email</a></li>
+
+
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+
+<!-- Modal -->
+<div class="modal fade" id="PhoneModal" tabindex="-1" aria-labelledby="PhoneModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-4" id="PhoneModalLabel">Phone Info</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        +91 987689741
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+  <!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="EmailModal" tabindex="-1" aria-labelledby="EmailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-4" id="EmailModalLabel">Email Info </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        C323zaidkhan@mctrgit.ac.in
+      </div>
+      
+    </div>
+  </div>
+</div>
+    <div class="container"> 
+        <div class="row justify-content-center align-items-center" style="height: 75vh;">
+            <div class="col-md-10 mx-auto">
+                <div class="card">
+                    <div class="card-header">RSA Parameter</div>
+                    <div class="card-body">
+                      <form action="/display_graph" method="POST">
+                            <div class="form-group">
+                                <label for="dropdown1">Region :</label>
+                                <select class="form-control" id="dropdown1" name="dropdown1">
+                                    <option value="option1">All</option>
+                                    <option value="option2">North</option>
+                                    <option value="option3">South</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dropdown2">Lanes :</label>
+                                <select class="form-control" id="dropdown2" name="dropdown2">
+                                    <option value="optionA">All</option>
+                                    <option value="optionB">Single</option>
+                                    <option value="optionC">Double</option>
+                                    <option value="optionD">Three-Lane</option>
+                                    <option value="optionC">Fourth-lane</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dropdown3">Representation :</label>
+                                <select class="form-control" id="dropdown3" name="dropdown3">
+                                    <option value="item1">All</option>
+                                    <option value="item2">Scatter Plot</option>
+                                    <option value="item3">Bar-Graph</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dropdown4">Accidents:</label>
+                                <select class="form-control" id="dropdown4" name="dropdown4">
+                                    <option value="choiceX">All </option>
+                                    <option value="choiceY">Killed</option>
+                                    <option value="choiceZ">Injured</option>
+                                </select>
+                            </div>
+                            <div class="form-group mt-3"> <!-- Add margin-top to create space -->
+                                <button type="submit" class="w-100 btn btn-primary">Submit</button>
+                            </div>
+                          </form>
+                         
+                        
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
